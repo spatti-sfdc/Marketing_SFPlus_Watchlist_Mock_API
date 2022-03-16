@@ -1,0 +1,23 @@
+{
+  "name": "Marketing_SFPlus_Watchlist_Mock_API",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Aaron Brown <aaron.brown@salesforce.com>",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "apollo-server": "^3.5.0",
+    "casual": "^1.6.2",
+    "graphql": "^16.1.0"
+  },
+  "engines": {
+    "node": ">=16.13.0",
+    "yarn": ">=1.22.15"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
