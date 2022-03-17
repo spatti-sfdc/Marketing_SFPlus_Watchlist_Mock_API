@@ -562,6 +562,7 @@ const server = new ApolloServer({
   plugins: [
     ApolloServerPluginLandingPageGraphQLPlayground(),
   ],
+  introspection: true,
 });
 
 const PORT = process.env.PORT ?? '4002';
