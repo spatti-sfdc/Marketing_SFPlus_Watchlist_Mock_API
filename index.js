@@ -567,5 +567,5 @@ const server = new ApolloServer({
 const PORT = process.env.PORT ?? '4002';
 
 server.listen(PORT).then(() => {
-  console.log(`🚀 Server ready at ${PORT}`);
+  console.log(`🚀 ==== Server ready at ${PORT}`);
 });
