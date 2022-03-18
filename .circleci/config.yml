@@ -75,28 +75,7 @@ commands:
             source $BASH_ENV
             echo "$COMMIT_MESSAGE" | npx commitlint
 jobs:
-  build-and-test:
-    executor: node-executor
-    steps:
-      - checkout
-      - run:
-          name: "Set Playwright browser cache test"
-          command: PLAYWRIGHT_BROWSERS_PATH=0
-      - install-yarn-dependencies
-      - run:
-          name: "Lint code"
-          command: yarn lint
-      - run:
-          name: "Build app"
-          command: yarn build
-      - run:
-          name: "Run Jest tests"
-          command: yarn test --maxWorkers=2 --coverage
-      - store_test_results:
-          path: ./reports/jest
-      - store_artifacts:
-          path: ./reports
-  deploy-code-to-bt-cascade-experiments:
+  deploy-mockgraphql-to-heroku:
     machine: true
     steps:
       - heroku/install
@@ -115,8 +94,7 @@ workflows:
   build-test-and-deploy:
     # Run the build followed by executing the tests and deploy to heroku
     jobs:
-      - build-and-test
-      - deploy-code-to-bt-cascade-experiments:
+      - deploy-mockgraphql-to-heroku:
           context: SLACKAPI
           requires: 
              - build-and-test      
