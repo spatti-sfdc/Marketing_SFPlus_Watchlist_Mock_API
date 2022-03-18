@@ -96,5 +96,3 @@ workflows:
     jobs:
       - deploy-mockgraphql-to-heroku:
           context: SLACKAPI
-          requires: 
-             - build-and-test      
