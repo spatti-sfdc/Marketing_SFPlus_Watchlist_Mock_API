@@ -81,14 +81,14 @@ jobs:
       - heroku/install
       - heroku/check-authentication
       - checkout
-      - heroku/push-docker-image:
-          no_output_timeout: 30m
-          process-types: web
+      # - heroku/push-docker-image:
+      #     no_output_timeout: 30m
+      #     process-types: web
       - run:
           name: "Update Heroku CLI"
           command: heroku update
       - heroku/release-docker-image
-      - slack/notify
+      # - slack/notify
 workflows:
   version: 2
   build-test-and-deploy:
