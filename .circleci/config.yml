@@ -24,35 +24,6 @@ executors:
         environment:
           NODE_ENV: development
 commands:
-  # install-yarn-dependencies:
-  #   steps:
-  #     - restore_cache:
-  #         name: "Restore yarn dependencies"
-  #         keys:
-  #           - yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
-  #     - run:
-  #         name: "Install dependencies"
-  #         command: yarn install --immutable
-  #     - save_cache:
-  #         name: "Save yarn packages cache"
-  #         key: yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
-  #         paths:
-  #           - ./node_modules
-  #           - ./.yarn/cache
-  # run-e2e-tests:
-  #   description: "Run E2E tests against 'host' environment"
-  #   parameters:
-  #     host:
-  #       type: string
-  #       default: "https://www-qa1.salesforce.com/?prorigin=c360"
-  #     type:
-  #       type: string
-  #       default: "live"
-  #     headers:
-  #       type: string
-  #       default: "" # each key value pair is colon punc separated, each set is comma separated eg header1:value,header2:value
-  #   steps:
-  #     - run: E2E_HOST=<< parameters.host >> E2E_HEADERS=<< parameters.headers >> yarn e2e:<< parameters.type >> --maxWorkers=2
   git-tag:
     description: "Tag current git commit with 'tag'"
     parameters:
