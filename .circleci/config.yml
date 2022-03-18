@@ -95,4 +95,3 @@ workflows:
     # Run the build followed by executing the tests and deploy to heroku
     jobs:
       - deploy-mockgraphql-to-heroku:
-          context: SLACKAPI
