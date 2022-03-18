@@ -94,4 +94,4 @@ workflows:
   build-test-and-deploy:
     # Run the build followed by executing the tests and deploy to heroku
     jobs:
-      - deploy-mockgraphql-to-heroku:
+      - deploy-mockgraphql-to-heroku
