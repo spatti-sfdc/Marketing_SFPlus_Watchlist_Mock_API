@@ -24,6 +24,35 @@ executors:
         environment:
           NODE_ENV: development
 commands:
+  install-yarn-dependencies:
+    steps:
+      - restore_cache:
+          name: "Restore yarn dependencies"
+          keys:
+            - yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
+      - run:
+          name: "Install dependencies"
+          command: yarn install --immutable
+      - save_cache:
+          name: "Save yarn packages cache"
+          key: yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
+          paths:
+            - ./node_modules
+            - ./.yarn/cache
+  run-e2e-tests:
+    description: "Run E2E tests against 'host' environment"
+    parameters:
+      host:
+        type: string
+        default: "https://www-qa1.salesforce.com/?prorigin=c360"
+      type:
+        type: string
+        default: "live"
+      headers:
+        type: string
+        default: "" # each key value pair is colon punc separated, each set is comma separated eg header1:value,header2:value
+    steps:
+      - run: E2E_HOST=<< parameters.host >> E2E_HEADERS=<< parameters.headers >> yarn e2e:<< parameters.type >> --maxWorkers=2
   git-tag:
     description: "Tag current git commit with 'tag'"
     parameters:
@@ -46,22 +75,48 @@ commands:
             source $BASH_ENV
             echo "$COMMIT_MESSAGE" | npx commitlint
 jobs:
-  mockedql-to-heroku:
+  build-and-test:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: "Set Playwright browser cache test"
+          command: PLAYWRIGHT_BROWSERS_PATH=0
+      - install-yarn-dependencies
+      - run:
+          name: "Lint code"
+          command: yarn lint
+      - run:
+          name: "Build app"
+          command: yarn build
+      - run:
+          name: "Run Jest tests"
+          command: yarn test --maxWorkers=2 --coverage
+      - store_test_results:
+          path: ./reports/jest
+      - store_artifacts:
+          path: ./reports
+  deploy-code-to-bt-cascade-experiments:
     machine: true
     steps:
       - heroku/install
       - heroku/check-authentication
       - checkout
-      # - run:
-      #     name: "Update Heroku CLI"
-      #     command: heroku update
-      # - slack/notify
+      - heroku/push-docker-image:
+          no_output_timeout: 30m
+          process-types: web
+      - run:
+          name: "Update Heroku CLI"
+          command: heroku update
+      - heroku/release-docker-image
+      - slack/notify
 workflows:
   version: 2
   build-test-and-deploy:
     # Run the build followed by executing the tests and deploy to heroku
     jobs:
-      - mockedql-to-heroku:
+      - build-and-test
+      - deploy-code-to-bt-cascade-experiments:
           context: SLACKAPI
-          # requires: 
-          #    - build-and-test      
+          requires: 
+             - build-and-test      
