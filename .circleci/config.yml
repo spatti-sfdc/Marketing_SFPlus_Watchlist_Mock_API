@@ -86,8 +86,8 @@ jobs:
       #     process-types: web
       - run:
           name: "Update Heroku CLI"
-          command: heroku update
-      - heroku/release-docker-image
+          command: git status
+      # - heroku/release-docker-image
       # - slack/notify
 workflows:
   version: 2
