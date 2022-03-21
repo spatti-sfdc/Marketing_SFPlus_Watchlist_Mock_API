@@ -23,57 +23,57 @@ executors:
       - image: mcr.microsoft.com/playwright:bionic
         environment:
           NODE_ENV: development
-commands:
-  install-yarn-dependencies:
-    steps:
-      - restore_cache:
-          name: "Restore yarn dependencies"
-          keys:
-            - yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
-      - run:
-          name: "Install dependencies"
-          command: yarn install --immutable
-      - save_cache:
-          name: "Save yarn packages cache"
-          key: yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ./node_modules
-            - ./.yarn/cache
-  run-e2e-tests:
-    description: "Run E2E tests against 'host' environment"
-    parameters:
-      host:
-        type: string
-        default: "https://www-qa1.salesforce.com/?prorigin=c360"
-      type:
-        type: string
-        default: "live"
-      headers:
-        type: string
-        default: "" # each key value pair is colon punc separated, each set is comma separated eg header1:value,header2:value
-    steps:
-      - run: E2E_HOST=<< parameters.host >> E2E_HEADERS=<< parameters.headers >> yarn e2e:<< parameters.type >> --maxWorkers=2
-  git-tag:
-    description: "Tag current git commit with 'tag'"
-    parameters:
-      tag:
-        type: string
-        default: ""
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "f4:e0:5c:97:f2:57:58:a8:e2:c9:c5:b1:78:2e:88:6a"
-      - run: |
-          git tag -fa "<< parameters.tag >>" -m "<< parameters.tag >>"
-          git push -f origin --tags
-  lint_commit_message:
-    steps:
-      - run:
-          name: "Verify Commit Message"
-          command: |
-            echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
-            source $BASH_ENV
-            echo "$COMMIT_MESSAGE" | npx commitlint
+# commands:
+#   install-yarn-dependencies:
+#     steps:
+#       - restore_cache:
+#           name: "Restore yarn dependencies"
+#           keys:
+#             - yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
+#       - run:
+#           name: "Install dependencies"
+#           command: yarn install --immutable
+#       - save_cache:
+#           name: "Save yarn packages cache"
+#           key: yarn-packages-app-deps-{{ .Environment.CACHE_VERSION }}-{{ checksum "yarn.lock" }}-{{ arch }}
+#           paths:
+#             - ./node_modules
+#             - ./.yarn/cache
+#   run-e2e-tests:
+#     description: "Run E2E tests against 'host' environment"
+#     parameters:
+#       host:
+#         type: string
+#         default: "https://www-qa1.salesforce.com/?prorigin=c360"
+#       type:
+#         type: string
+#         default: "live"
+#       headers:
+#         type: string
+#         default: "" # each key value pair is colon punc separated, each set is comma separated eg header1:value,header2:value
+#     steps:
+#       - run: E2E_HOST=<< parameters.host >> E2E_HEADERS=<< parameters.headers >> yarn e2e:<< parameters.type >> --maxWorkers=2
+#   git-tag:
+#     description: "Tag current git commit with 'tag'"
+#     parameters:
+#       tag:
+#         type: string
+#         default: ""
+#     steps:
+#       - add_ssh_keys:
+#           fingerprints:
+#             - "f4:e0:5c:97:f2:57:58:a8:e2:c9:c5:b1:78:2e:88:6a"
+#       - run: |
+#           git tag -fa "<< parameters.tag >>" -m "<< parameters.tag >>"
+#           git push -f origin --tags
+#   lint_commit_message:
+#     steps:
+#       - run:
+#           name: "Verify Commit Message"
+#           command: |
+#             echo 'export COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")' >> $BASH_ENV
+#             source $BASH_ENV
+#             echo "$COMMIT_MESSAGE" | npx commitlint
 jobs:
   deploy-mockgraphql-to-heroku:
     machine:
@@ -107,6 +107,5 @@ jobs:
 workflows:
   version: 2
   build-test-and-deploy:
-    # Run the build followed by executing the tests and deploy to heroku
     jobs:
       - deploy-mockgraphql-to-heroku
