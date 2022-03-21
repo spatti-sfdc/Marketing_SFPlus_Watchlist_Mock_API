@@ -17,7 +17,7 @@ jobs:
           name: "Set Heroku App name"
           command: |
             pwd
-            app_name=$(echo "mockedgraphql-v" | tr / - | cut -c1-24)
+            app_name=$(echo "mockg-v1" | tr / - | cut -c1-24)
             echo "export HEROKU_APP_NAME=$app_name" >> $BASH_ENV
       - run:
           name: "Create app in heroku if it doesn't exist"
