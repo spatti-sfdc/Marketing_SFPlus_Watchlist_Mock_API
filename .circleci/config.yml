@@ -82,8 +82,11 @@ jobs:
       - heroku/check-authentication
       - checkout
       - run: |
-          cat .git/config
-          git status
+          # heroku plugins:install heroku-repo
+          heroku repo:reset -a graphqmock-v1
+          git commit --allow-empty -m "Reset Heroku Repository"
+          git push heroku main
+          git push origin main
 
 
       # - heroku/release-docker-image
