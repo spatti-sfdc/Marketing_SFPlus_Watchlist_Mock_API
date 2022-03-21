@@ -82,7 +82,8 @@ jobs:
       - heroku/check-authentication
       - checkout
       - run: |
-          heroku create graphqmock-v1
+          # heroku create graphqmock-v1
+          heroku git:remote -a graphqmock-v1
           cat .git/config
           git push heroku main
           
