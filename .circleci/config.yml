@@ -76,7 +76,6 @@ commands:
             echo "$COMMIT_MESSAGE" | npx commitlint
 jobs:
   deploy-mockgraphql-to-heroku:
-    # machine: true
     machine:
       image: ubuntu-2004:202111-02
     steps:
