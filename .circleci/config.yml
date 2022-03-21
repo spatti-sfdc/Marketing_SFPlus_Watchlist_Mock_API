@@ -81,13 +81,8 @@ jobs:
       - heroku/install
       - heroku/check-authentication
       - checkout
-      - heroku/push-docker-image:
-           no_output_timeout: 30m
-           process-types: web
-      # - run:
-      #     git status
-      #     git logs
-      #     heroku auth:token
+      - run:
+          heroku auth:token
 
 
       # - heroku/release-docker-image
