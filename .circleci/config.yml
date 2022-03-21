@@ -76,13 +76,15 @@ commands:
             echo "$COMMIT_MESSAGE" | npx commitlint
 jobs:
   deploy-mockgraphql-to-heroku:
-    machine: true
+    # machine: true
+    machine:
+      image: ubuntu-2004:202111-02
     steps:
       - heroku/install
       - heroku/check-authentication
       - checkout
       - run: | 
-          heroku apps:create -a graphqmock-v2 -t sfdc-bt-events --space bt-events-cascade-experiments
+          #heroku apps:create -a graphqmock-v2 -t sfdc-bt-events --space bt-events-cascade-experiments
           # heroku git:remote -a graphqmock-v1 -t sfdc-bt-events --space bt-events-cascade-experiments
           git push heroku main
           
