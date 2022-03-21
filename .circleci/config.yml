@@ -83,8 +83,28 @@ jobs:
       - heroku/install
       - heroku/check-authentication
       - checkout
+      - run:
+          name: "Set Heroku App name"
+          command: |
+            pwd
+            app_name=$(echo "graphqmock-v3" | tr / - | cut -c1-24)
+            echo "export HEROKU_APP_NAME=$app_name" >> $BASH_ENV
+      - run:
+          name: "Create app in heroku if it doesn't exist"
+          command: |
+            [ -z $(heroku apps -t ${HEROKU_TEAM_NAME} -s ${HEROKU_SPACE_NAME} \
+                   | grep "${HEROKU_APP_NAME}") ] && (heroku apps:create ${HEROKU_APP_NAME} -t ${HEROKU_TEAM_NAME} \
+                   --space=${HEROKU_SPACE_NAME}) \
+                   || (echo "Skipping app creation....app ${HEROKU_APP_NAME} already exists")
+      - run:
+          name: "Create GITHUB_TOKEN environment var if it doesn't exist for the app in heroku"
+          command: |
+            [ -z $(heroku config:get GITHUB_TOKEN -a ${HEROKU_APP_NAME}) ] \
+                   && heroku config:set GITHUB_TOKEN=${GITHUB_TOKEN} -a ${HEROKU_APP_NAME} \
+                   || echo "GITHUB_TOKEN already Set.."
       - heroku/deploy-via-git:
-          app-name: graphqmock-v2
+          app-name: ${HEROKU_APP_NAME}
+
 
 workflows:
   version: 2
