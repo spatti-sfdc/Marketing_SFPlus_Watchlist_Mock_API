@@ -82,7 +82,7 @@ jobs:
       - heroku/check-authentication
       - checkout
       - run:
-          heroku auth:token
+          git push heroku master
 
 
       # - heroku/release-docker-image
