@@ -82,7 +82,8 @@ jobs:
       - heroku/check-authentication
       - checkout
       - run:
-          git push heroku main
+          cat .git/config
+          git status
 
 
       # - heroku/release-docker-image
