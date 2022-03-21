@@ -81,7 +81,7 @@ jobs:
       - heroku/install
       - heroku/check-authentication
       - checkout
-      - run:
+      - run: |
           cat .git/config
           git status
 
