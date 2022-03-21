@@ -84,8 +84,8 @@ jobs:
       - run: |
           heroku create graphqmock-v1
           cat .git/config
-          # git commit --allow-empty -m "Reset Heroku Repository"
-          # git push heroku main
+          git push heroku main
+          
           # git push origin main
 
 
