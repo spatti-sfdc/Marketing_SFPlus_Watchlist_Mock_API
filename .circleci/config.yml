@@ -85,7 +85,7 @@ jobs:
       - checkout
       - run: | 
           #heroku apps:create -a graphqmock-v2 -t sfdc-bt-events --space bt-events-cascade-experiments
-          # heroku git:remote -a graphqmock-v1 -t sfdc-bt-events --space bt-events-cascade-experiments
+          heroku git:remote -a graphqmock-v2
           git push heroku main
           
 
