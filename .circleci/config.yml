@@ -105,7 +105,6 @@ jobs:
       - heroku/deploy-via-git:
           app-name: ${HEROKU_APP_NAME}
 
-
 workflows:
   version: 2
   build-test-and-deploy:
