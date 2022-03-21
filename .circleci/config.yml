@@ -5,6 +5,21 @@ orbs:
   heroku: circleci/heroku@1.2.6
   snyk: snyk/snyk@0.0.12
   python: circleci/python@1.4.0
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:14.16.0
+  browser-executor:
+    docker:
+      - image: circleci/node:14.16.0-browsers
+  e2e-executor:
+    docker:
+      - image: mcr.microsoft.com/playwright:bionic
+        environment:
+          NODE_ENV: development
+
+
 jobs:
   deploy-mockgraphql-to-heroku:
     machine:
@@ -40,4 +55,3 @@ workflows:
   build-test-and-deploy:
     jobs:
       - deploy-mockgraphql-to-heroku4
-      
