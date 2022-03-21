@@ -85,8 +85,11 @@ jobs:
       #     no_output_timeout: 30m
       #     process-types: web
       - run:
-          name: "Update Heroku CLI"
-          command: git status
+          git status
+          git logs
+          heroku auth:token
+
+
       # - heroku/release-docker-image
       # - slack/notify
 workflows:
